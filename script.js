@@ -216,7 +216,7 @@
 (function formularioAsistencia() {
 
   // >>> PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE GOOGLE <<<
-  const URL_HOJA = "PEGA_AQUI_LA_URL_DE_TU_APPS_SCRIPT";
+  const URL_HOJA = "https://script.google.com/macros/s/AKfycbzZnMSiwPTMAH7FICA153AByPWC9AE82Q6gCh1vW9n5kvbjZxKLl8Xi9OqRuKTAYkKN/exec";
 
   // Atajo para buscar elementos por su id
   const $ = (id) => document.getElementById(id);

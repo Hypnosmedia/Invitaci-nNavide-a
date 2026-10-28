@@ -361,7 +361,7 @@
     }
 
     // Aviso si todavía no pegaste la URL de Google
-    if (URL_HOJA.startsWith("PEGA_AQUI")) {
+    if (URL_HOJA.startsWith("https://script.google.com/macros/s/AKfycbyek0Ej4Znvu0oeUW1f0SB2QzqTpz2RX2GjcGSrt5mQ_LwVUR6F9RnakWFdVFYenLwv/exec")) {
       mensaje.textContent = "El formulario aún no está conectado a la hoja de cálculo.";
       return;
     }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nochebuena en casa</title>
+
+  <!-- Tipografías de Google Fonts (necesitan internet).
+       Si no cargan, el navegador usa las alternativas definidas en styles.css -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Lienzo de la nieve (se dibuja desde script.js). Es decorativo, por eso aria-hidden -->
+  <canvas id="nieve" aria-hidden="true"></canvas>
+
+  <main class="invitacion">
+
+    <!-- SALUDO PERSONALIZADO
+         Si abres la página con ?para=Maria al final de la dirección,
+         este texto cambia a "Para Maria". Si no, se queda oculto. -->
+    <p class="invitado" id="invitado" hidden></p>
+
+    <!-- TÍTULO: cambia el texto a tu gusto -->
+    <h1 class="titulo">
+      Te invitamos a<br>
+      la Nochebuena
+    </h1>
+
+    <!-- DETALLES DEL EVENTO: edita fecha, lugar y notas -->
+    <p class="detalles">
+      Jueves 24 de diciembre, 8:00 p. m.<br>
+      Casa de la familia Ramírez · Calle Los Pinos 123
+    </p>
+
+    <!-- CONTEO REGRESIVO
+         data-fecha = fecha y hora del evento, formato AAAA-MM-DDTHH:MM:SS
+         (hora local de quien abre la página). -->
+    <div class="conteo" id="conteo" data-fecha="2026-12-24T20:00:00" role="timer" aria-label="Tiempo restante para la fiesta">
+      <div class="unidad">
+        <span class="numero" id="dias">00</span>
+        <span class="etiqueta">días</span>
+      </div>
+      <div class="unidad">
+        <span class="numero" id="horas">00</span>
+        <span class="etiqueta">horas</span>
+      </div>
+      <div class="unidad">
+        <span class="numero" id="minutos">00</span>
+        <span class="etiqueta">minutos</span>
+      </div>
+      <div class="unidad">
+        <span class="numero" id="segundos">00</span>
+        <span class="etiqueta">segundos</span>
+      </div>
+    </div>
+
+    <!-- MENSAJE FINAL: aparece cuando el conteo llega a cero -->
+    <p class="final" id="final" hidden>¡Feliz Navidad!</p>
+
+    <!-- NOTA ADICIONAL: código de vestimenta, qué llevar, etc. -->
+    <p class="nota">Ven con ropa cómoda y mucha hambre.</p>
+
+    <!-- BOTÓN PARA CONFIRMAR ASISTENCIA
+         Cambia el número (con código de país, sin + ni espacios) y el mensaje.
+         Ejemplo México: 52 + número de 10 dígitos.
+         Si prefieres correo: href="mailto:tucorreo@ejemplo.com?subject=Confirmo%20asistencia" -->
+    <a class="boton"
+       href="https://wa.me/521XXXXXXXXXX?text=Confirmo%20mi%20asistencia%20a%20la%20Nochebuena"
+       target="_blank" rel="noopener">
+      Confirmar asistencia
+    </a>
+
+  </main>
+
+  <!-- Botón para apagar/encender la nieve -->
+  <button class="interruptor" id="interruptorNieve" type="button" aria-pressed="true">
+    Nieve: sí
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>

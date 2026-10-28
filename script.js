@@ -216,7 +216,7 @@
 (function formularioAsistencia() {
 
   // >>> PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE GOOGLE <<<
-  const URL_HOJA = "https://script.google.com/macros/s/AKfycbzemDDL9gVEclsTPHCFtY7j-DaOlkFJpHpBkV6N-4qIdfRNxdWodw8I5oyelzGWtNiA/exec";
+  const URL_HOJA = "https://script.google.com/macros/s/AKfycbx1jLAuLlM7INcAkCJHGz0etrrMF_BWAI6YLGajekzKAAN5YBlSIz39mcwOm7XNit5l/exec";
 
   // Referencias a los elementos de la página
   const ventana     = document.getElementById("ventana");

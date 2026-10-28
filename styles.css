@@ -91,7 +91,7 @@ body {
 }
 
 .detalles {
-  margin: 0 0 3rem;
+  margin: 0 0 1.5rem;
   color: var(--texto-suave);
   font-size: 1.05rem;
 }
@@ -171,6 +171,20 @@ body {
 .boton:hover {
   background: var(--acento-hover);
   transform: translateY(-2px);
+}
+
+/* Botón secundario (ubicación): solo contorno, para que el rojo
+   quede reservado al botón principal de confirmar asistencia */
+.boton-secundario {
+  margin-bottom: 3rem;           /* espacio antes del conteo */
+  padding: 0.65rem 1.6rem;
+  background: transparent;
+  border: 1px solid var(--dorado);
+  color: var(--dorado);
+}
+
+.boton-secundario:hover {
+  background: rgba(228, 201, 142, 0.12);
 }
 
 /* Contorno visible al navegar con teclado (accesibilidad) */

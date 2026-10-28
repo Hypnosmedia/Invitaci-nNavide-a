@@ -316,6 +316,38 @@ body {
   outline-offset: 2px;
 }
 
+/* Botón de música (esquina superior izquierda de la ventana) */
+.musica {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--dorado);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.musica:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.musica:focus-visible {
+  outline: 2px solid var(--dorado);
+  outline-offset: 2px;
+}
+
+/* En pausa: se ve apagado y tachado */
+.musica[aria-pressed="false"] {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
 /* Copo de nieve decorativo: gira una sola vez al abrir la ventana */
 .copo {
   display: block;

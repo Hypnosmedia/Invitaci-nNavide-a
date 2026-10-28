@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Posada Antavi</title>
+  <title>Nochebuena en casa</title>
 
   <!-- Tipografías de Google Fonts (necesitan internet).
        Si no cargan, el navegador usa las alternativas definidas en styles.css -->
@@ -24,7 +24,7 @@
        porque el fondo es verde oscuro.
        Reemplaza "Nombre de la empresa" por el nombre real (describe el logo
        para lectores de pantalla). -->
-  <img class="logo" src="antavi.png" alt="Logotipo de Nombre de la empresa">
+  <img class="logo" src="logo.png" alt="Logotipo de Nombre de la empresa">
 
   <main class="invitacion">
 
@@ -35,14 +35,14 @@
 
     <!-- TÍTULO: cambia el texto a tu gusto -->
     <h1 class="titulo">
-      Cena Navideña<br>
-      
+      Te invitamos a<br>
+      la Nochebuena
     </h1>
 
     <!-- DETALLES DEL EVENTO: edita fecha, lugar y notas -->
     <p class="detalles">
-      Viernes 11 de diciembre, de 4:00 p. m.<br>
-      Terraza Trisol | Av. Cuauhtémoc #2321, Zapopan, Jal.
+      Jueves 24 de diciembre, 8:00 p. m.<br>
+      Casa de la familia Ramírez · Calle Los Pinos 123
     </p>
 
     <!-- BOTÓN DE UBICACIÓN
@@ -52,15 +52,15 @@
          3. Pega ese vínculo aquí, entre las comillas.
          Mientras no lo cambies, abre una búsqueda con la dirección de ejemplo. -->
     <a class="boton boton-secundario"
-       href="https://www.google.com/maps/place/Trisol+TERRAZA/@20.6462219,-103.410548,16.66z/data=!4m6!3m5!1s0x8428ac33aa8c13ed:0xd0dbc5e0f4f254f1!8m2!3d20.6462227!4d-103.408236!16s%2Fg%2F1ptx0lc58?entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+       href="https://www.google.com/maps/search/?api=1&query=Calle+Los+Pinos+123"
        target="_blank" rel="noopener">
-      Ver ubicación
+      Cómo llegar
     </a>
 
     <!-- CONTEO REGRESIVO
          data-fecha = fecha y hora del evento, formato AAAA-MM-DDTHH:MM:SS
          (hora local de quien abre la página). -->
-    <div class="conteo" id="conteo" data-fecha="2026-12-11T14:00:00" role="timer" aria-label="Tiempo restante para la fiesta">
+    <div class="conteo" id="conteo" data-fecha="2026-12-24T20:00:00" role="timer" aria-label="Tiempo restante para la fiesta">
       <div class="unidad">
         <span class="numero" id="dias">00</span>
         <span class="etiqueta">días</span>
@@ -83,7 +83,7 @@
     <p class="final" id="final" hidden>¡Feliz Navidad!</p>
 
     <!-- NOTA ADICIONAL: código de vestimenta, qué llevar, etc. -->
-    <p class="nota">Los esperamos con muchísimo cariño para celebrar juntos una Navidad llena de amistad, unión y momentos inolvidables.</p>
+    <p class="nota">Ven con ropa cómoda y mucha hambre.</p>
 
     <!-- BOTÓN PARA CONFIRMAR ASISTENCIA
          Al hacer clic abre la ventana con el formulario (ver más abajo).
@@ -103,6 +103,9 @@
   <dialog class="ventana" id="ventana" aria-labelledby="ventanaTitulo">
     <div class="ventana-contenido">
 
+      <!-- Botón para pausar o reanudar la canción (esquina superior izquierda) -->
+      <button class="musica" id="musica" type="button" aria-pressed="false" aria-label="Reproducir música">&#9834;</button>
+
       <!-- Botón para cerrar (la X de la esquina) -->
       <button class="cerrar" id="cerrarX" type="button" aria-label="Cerrar ventana">&times;</button>
 
@@ -116,7 +119,7 @@
         </svg>
 
         <h2 class="ventana-titulo" id="ventanaTitulo">Confirma tu asistencia</h2>
-        <p class="ventana-sub">Deseamos de corazón poder reunirnos.</p>
+        <p class="ventana-sub">Así sabremos cuántos seremos en la mesa.</p>
 
         <form class="formulario" id="formulario" novalidate>
 
@@ -181,6 +184,14 @@
     Nieve: sí
   </button>
 
+  <!-- CANCIÓN DE LA INVITACIÓN
+       Guarda tu canción en esta misma carpeta con el nombre "cancion.mp3"
+       (o cambia el nombre en src). Se reproduce al hacer clic en "Confirmar asistencia".
+       preload="none" hace que NO se descargue hasta que se necesite. -->
+  <audio id="cancion" src="cancion.mp3" preload="none"></audio>
+
   <script src="script.js"></script>
+  <!-- Controla la canción (volumen, repetición, botón de pausa) -->
+  <script src="musica.js"></script>
 </body>
 </html>

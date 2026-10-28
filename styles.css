@@ -216,10 +216,28 @@ body {
   border-color: var(--texto-suave);
 }
 
+/* ---------- Logotipo de la empresa ---------- */
+.logo {
+  position: absolute;      /* fijo en la esquina; se va al hacer scroll */
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 2;              /* por encima de la nieve */
+  height: 3rem;            /* altura del logo: cámbiala para hacerlo más grande o pequeño */
+  width: auto;             /* mantiene la proporción */
+  max-width: 40vw;         /* evita que sea demasiado ancho en celulares */
+}
+
 /* ---------- Pantallas pequeñas ---------- */
 @media (max-width: 420px) {
   .unidad { min-width: 3rem; }
   .etiqueta { font-size: 0.8rem; }
+
+  /* El logo se reduce para no tapar el título */
+  .logo {
+    height: 2.25rem;
+    top: 1rem;
+    right: 1rem;
+  }
 }
 
 /* ---------- Respeto a quienes prefieren menos movimiento ---------- */

@@ -1,553 +1,642 @@
-/* =========================================================
-   ESTILOS DE LA INVITACIÓN DE NAVIDAD
-   ---------------------------------------------------------
-   Lo más fácil de personalizar está en :root (colores y
-   tipografías). Cambia los valores y todo el diseño se adapta.
-   ========================================================= */
+/* ================================================================
+   INVITACIÓN NOCHEBUENA ANTAVI — PALETA VERDE BOSQUE
+   ================================================================ */
 
+/* ---------- Tokens de color ---------- */
 :root {
-  /* --- COLORES --- */
-  --fondo-centro: #17392f;   /* verde pino, parte clara del fondo */
-  --fondo-borde:  #0b1f19;   /* verde muy oscuro, bordes del fondo */
-  --texto:        #f3f6f2;   /* blanco nieve para textos */
-  --texto-suave:  #a9bfb4;   /* verde grisáceo para textos secundarios */
-  --acento:       #b8323f;   /* rojo baya: botón */
-  --acento-hover: #d03f4d;   /* rojo baya más claro al pasar el mouse */
-  --dorado:       #e4c98e;   /* dorado suave: números del conteo */
+  --fondo:        #1F3B2D;
+  --fondo-claro:  #265a3e;
+  --crema:        #F4EBDD;
+  --crema-med:    rgba(244, 235, 221, 0.65);
+  --crema-suave:  rgba(244, 235, 221, 0.18);
+  --rojo:         #B8323F;
+  --rojo-oscuro:  #961E2A;
+  --dorado:       #C9A84C;
 
-  /* --- TIPOGRAFÍAS (con alternativas por si no hay internet) --- */
-  --fuente-titulo: "Fraunces", Georgia, "Times New Roman", serif;
-  --fuente-texto:  "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente-titulo: "Cormorant Garamond", Georgia, serif;
+  --fuente-script: "Pinyon Script", cursive;
+  --fuente-texto:  "DM Sans", system-ui, sans-serif;
+
+  color-scheme: dark;
 }
 
-/* ---------- Base ---------- */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* ================================================================
+   BASE
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  display: grid;
-  place-items: center;          /* centra la invitación en pantalla */
-  padding: 2rem 1.25rem;
-  color: var(--texto);
+  min-height: 100dvh;
   font-family: var(--fuente-texto);
+  font-size: 1rem;
   line-height: 1.6;
-  /* Fondo: un resplandor verde en el centro que se oscurece hacia los bordes */
-  background: radial-gradient(ellipse at 50% 35%, var(--fondo-centro) 0%, var(--fondo-borde) 75%);
+  color: var(--crema);
+  background: radial-gradient(ellipse 90% 70% at 50% 38%,
+    var(--fondo-claro) 0%,
+    var(--fondo) 65%);
   background-attachment: fixed;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(80px, 11vh, 110px) max(16px, env(safe-area-inset-left, 0px))
+           clamp(2.5rem, 6vh, 4rem)  max(16px, env(safe-area-inset-right, 0px));
 }
 
-/* ---------- Nieve (canvas a pantalla completa, detrás del contenido) ---------- */
+/* ================================================================
+   ÁRBOL DE FONDO
+   ================================================================ */
+.arbol-fondo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(260px, 56vw, 400px);
+  height: auto;
+  opacity: 0.12;
+  color: var(--crema);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ================================================================
+   GUIRNALDAS EN ESQUINAS SUPERIORES
+   ================================================================ */
+.guirnaldas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  user-select: none;
+}
+
+.guirnalda {
+  position: absolute;
+  width: clamp(120px, 22vw, 200px);
+  height: auto;
+  color: var(--crema);
+  opacity: 0.75;
+  overflow: visible;
+}
+
+.guirnalda.gl { top: 0; left: 0; }
+.guirnalda.gr {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/* ================================================================
+   HILO DE ESFERAS COLGANTES
+   ================================================================ */
+.hilo-esferas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 2;
+  pointer-events: none;
+  color: var(--crema);
+  user-select: none;
+}
+
+.esfera-colg {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .esfera-colg:nth-child(odd)  { animation: balanceo 3.8s ease-in-out infinite;      }
+  .esfera-colg:nth-child(even) { animation: balanceo 3.8s ease-in-out infinite 1s;   }
+}
+
+@keyframes balanceo {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50%       { transform: rotate(3.5deg);  }
+}
+
+/* ================================================================
+   LIENZO DE NIEVE
+   ================================================================ */
 #nieve {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;         /* no estorba los clics */
+  pointer-events: none;
   z-index: 0;
+  user-select: none;
 }
 
-/* ---------- Contenedor principal ---------- */
+/* ================================================================
+   CONTENIDO PRINCIPAL — MARCO DE POSTAL
+   ================================================================ */
 .invitacion {
   position: relative;
-  z-index: 1;                   /* por encima de la nieve */
+  z-index: 1;
   width: 100%;
-  max-width: 40rem;
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  /* Único movimiento automático: la invitación aparece suavemente al cargar */
-  animation: aparecer 1.4s ease-out both;
+  gap: 1.1rem;
+  padding: 3rem 1.75rem 2.5rem;
+  border: 1px solid var(--crema-suave);
+  border-radius: 1rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
-@keyframes aparecer {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: none; }
+/* Perforaciones tipo sello */
+.invitacion::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 14px;
+  border-radius: 1rem 1rem 0 0;
+  background-color: rgba(244, 235, 221, 0.22);
+  -webkit-mask-image: radial-gradient(circle 5.5px at 11px 50%, transparent 99%, black 100%);
+  mask-image: radial-gradient(circle 5.5px at 11px 50%, transparent 99%, black 100%);
+  -webkit-mask-size: 20px 14px;
+  mask-size: 20px 14px;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
 }
 
-/* ---------- Textos ---------- */
+/* ================================================================
+   ANIMACIONES DE ENTRADA ESCALONADAS
+   ================================================================ */
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .invitacion > * {
+    animation: entrar 0.75s ease-out both;
+    animation-delay: var(--d, 0s);
+  }
+}
+
+.estrella         { --d: 0s;    }
+.logo-wrap        { --d: 0.08s; }
+.invitado         { --d: 0.16s; }
+.titulo           { --d: 0.24s; }
+.detalles         { --d: 0.38s; }
+.boton-secundario { --d: 0.48s; }
+.conteo           { --d: 0.56s; }
+.nota             { --d: 0.70s; }
+
+/* ================================================================
+   ESTRELLA SOBRE EL LOGO
+   ================================================================ */
+.estrella {
+  display: block;
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: var(--dorado);
+}
+
+/* ================================================================
+   LOGO
+   ================================================================ */
+.logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.logo {
+  height: 2.6rem;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+/* ================================================================
+   INVITADO PERSONALIZADO
+   ================================================================ */
 .invitado {
-  margin: 0 0 1rem;
-  font-family: var(--fuente-titulo);
-  font-style: italic;
-  font-size: 1.25rem;
-  color: var(--dorado);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crema-med);
 }
 
+/* ================================================================
+   TITULAR
+   ================================================================ */
 .titulo {
-  margin: 0 0 1.5rem;
   font-family: var(--fuente-titulo);
+  font-size: clamp(1.85rem, 5.5vw, 2.6rem);
   font-weight: 300;
-  font-size: clamp(2.4rem, 8vw, 4.2rem);   /* se adapta al ancho de pantalla */
+  line-height: 1.2;
+  color: var(--crema);
+  text-wrap: balance;
+}
+
+.nochebuena {
+  display: block;
+  font-family: var(--fuente-script);
+  font-size: clamp(2.5rem, 8vw, 3.8rem);
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  color: var(--rojo);
+  font-weight: 400;
 }
 
+/* ================================================================
+   FECHA Y LUGAR
+   ================================================================ */
 .detalles {
-  margin: 0 0 1.5rem;
-  color: var(--texto-suave);
-  font-size: 1.05rem;
+  font-family: var(--fuente-titulo);
+  font-size: clamp(1rem, 2.8vw, 1.15rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--crema-med);
+  line-height: 1.5;
 }
 
-.nota {
-  margin: 0 0 2rem;
-  color: var(--texto-suave);
+/* ================================================================
+   BOTONES
+   ================================================================ */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7em 1.8em;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: var(--fuente-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+  text-decoration: none;
+  background: var(--rojo);
+  color: #fff;
 }
 
-/* ---------- Conteo regresivo ---------- */
+.boton:hover  { background: var(--rojo-oscuro); }
+.boton:active { transform: scale(0.97); }
+
+.boton-secundario {
+  background: transparent;
+  border: 1px solid rgba(244, 235, 221, 0.4);
+  color: var(--crema);
+  font-size: 0.88rem;
+}
+
+.boton-secundario:hover {
+  background: rgba(244, 235, 221, 0.08);
+  border-color: rgba(244, 235, 221, 0.65);
+}
+
+.boton-confirmar {
+  width: 100%;
+  padding: 0.85em 1.8em;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  --d: 0.78s;
+}
+
+@media (min-width: 480px) {
+  .boton-confirmar { width: auto; min-width: 14rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .boton-confirmar {
+    animation: entrar 0.75s ease-out 0.78s both,
+               pulso-suave 2.8s ease-in-out 2.5s infinite;
+  }
+}
+
+@keyframes pulso-suave {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(184, 50, 63, 0.45); }
+  60%       { box-shadow: 0 0 0 10px rgba(184, 50, 63, 0);   }
+}
+
+.boton.cargando { opacity: 0.75; cursor: wait; }
+
+.enlace {
+  background: none;
+  border: none;
+  color: var(--crema-med);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.25rem;
+  transition: color 0.15s;
+}
+.enlace:hover { color: var(--crema); }
+
+/* ================================================================
+   CONTEO REGRESIVO
+   ================================================================ */
 .conteo {
   display: flex;
+  gap: 0.6rem;
   justify-content: center;
-  gap: clamp(1rem, 4vw, 2.5rem);
-  margin-bottom: 3rem;
+  flex-wrap: nowrap;
 }
 
 .unidad {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 3.5rem;
+  min-width: 3.2rem;
+  background: rgba(244, 235, 221, 0.06);
+  border: 1px solid var(--crema-suave);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.6rem 0.4rem;
 }
 
 .numero {
   font-family: var(--fuente-titulo);
-  font-weight: 300;
-  font-size: clamp(2.4rem, 9vw, 4.5rem);
+  font-size: clamp(1.6rem, 5vw, 2rem);
+  font-weight: 600;
   line-height: 1;
-  color: var(--dorado);
-  font-variant-numeric: tabular-nums;   /* todos los dígitos con el mismo ancho: no "bailan" */
-  display: inline-block;
-}
-
-/* Pequeño "pulso" cuando cambia el número (la clase la añade script.js) */
-.numero.cambio {
-  animation: pulso 0.45s ease-out;
-}
-
-@keyframes pulso {
-  from { opacity: 0.35; transform: translateY(-6px); }
-  to   { opacity: 1;    transform: none; }
+  color: var(--rojo);
 }
 
 .etiqueta {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--texto-suave);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--crema-med);
+  margin-top: 0.2rem;
 }
 
-/* ---------- Mensaje cuando termina el conteo ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes cambio-numero {
+    from { opacity: 0.3; transform: translateY(-4px); }
+    to   { opacity: 1;   transform: translateY(0);    }
+  }
+  .numero.cambio { animation: cambio-numero 0.25s ease-out; }
+}
+
+/* ================================================================
+   MENSAJE FINAL Y NOTA
+   ================================================================ */
 .final {
-  margin: 0 0 3rem;
   font-family: var(--fuente-titulo);
+  font-size: 1.6rem;
   font-style: italic;
-  font-size: clamp(2rem, 7vw, 3.2rem);
   color: var(--dorado);
 }
 
-/* El atributo "hidden" debe ganar siempre sobre los estilos de arriba */
-[hidden] {
-  display: none !important;
+.nota {
+  font-size: 0.88rem;
+  color: var(--crema-med);
+  max-width: 22rem;
 }
 
-/* ---------- Botón de confirmación ---------- */
-.boton {
-  display: inline-block;
-  padding: 0.9rem 2.2rem;
-  border-radius: 999px;          /* forma de píldora */
-  background: var(--acento);
-  color: var(--texto);
-  font: inherit;                 /* para que <button> use la misma letra que el resto */
-  font-weight: 500;
-  border: 0;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.boton:hover {
-  background: var(--acento-hover);
-  transform: translateY(-2px);
-}
-
-/* Botón secundario (ubicación): solo contorno, para que el rojo
-   quede reservado al botón principal de confirmar asistencia */
-.boton-secundario {
-  margin-bottom: 3rem;           /* espacio antes del conteo */
-  padding: 0.65rem 1.6rem;
-  background: transparent;
-  border: 1px solid var(--dorado);
-  color: var(--dorado);
-}
-
-.boton-secundario:hover {
-  background: rgba(228, 201, 142, 0.12);
-}
-
-/* Contorno visible al navegar con teclado (accesibilidad) */
-.boton:focus-visible,
-.interruptor:focus-visible {
-  outline: 2px solid var(--dorado);
-  outline-offset: 3px;
-}
-
-/* ---------- Interruptor de nieve ---------- */
-.interruptor {
+/* ================================================================
+   CONTROLES FLOTANTES (Nieve / Música)
+   ================================================================ */
+.controles {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 2;
-  padding: 0.5rem 1rem;
-  border: 1px solid rgba(243, 246, 242, 0.25);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--texto-suave);
-  font: inherit;
-  font-size: 0.85rem;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
+  right: max(1rem, env(safe-area-inset-right, 1rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  background: rgba(244, 235, 221, 0.90);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(244, 235, 221, 0.5);
+  border-radius: 99px;
+  font-family: var(--fuente-texto);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--fondo);
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
 }
 
-.interruptor:hover {
-  color: var(--texto);
-  border-color: var(--texto-suave);
+.control:hover  { background: rgba(244, 235, 221, 1); }
+.control:active { transform: scale(0.95); }
+
+.control[aria-pressed="false"] {
+  background: rgba(244, 235, 221, 0.45);
+  color: rgba(31, 59, 45, 0.7);
 }
 
-/* ---------- Botón desactivado / enviando ---------- */
-.boton:disabled {
-  opacity: 0.7;
-  cursor: wait;
-  transform: none;
+/* ================================================================
+   DIÁLOGO DE CONFIRMACIÓN
+   ================================================================ */
+dialog {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 100vw;
+  max-height: 100dvh;
 }
 
-/* Rueda que gira dentro del botón mientras se envía (la clase "cargando" la pone script.js) */
-.boton.cargando::before {
-  content: "";
-  display: inline-block;
-  width: 0.9em;
-  height: 0.9em;
-  margin-right: 0.6em;
-  vertical-align: -0.1em;
-  border: 2px solid rgba(243, 246, 242, 0.4);
-  border-top-color: var(--texto);
-  border-radius: 50%;
-  animation: girar 0.7s linear infinite;
-}
-
-@keyframes girar {
-  to { transform: rotate(360deg); }
-}
-
-/* =========================================================
-   VENTANA DEL FORMULARIO DE ASISTENCIA
-   ========================================================= */
-.ventana {
-  width: calc(100% - 2.5rem);
-  max-width: 25rem;
-  padding: 0;                    /* el espacio interno lo da .ventana-contenido */
-  border: 1px solid rgba(228, 201, 142, 0.25);
-  border-radius: 1.5rem;
-  background: linear-gradient(160deg, #1e4a3b 0%, #12312a 100%);
-  color: var(--texto);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
-}
-
-/* La ventana aparece con un pequeño ascenso suave al abrirse */
-.ventana[open] {
-  animation: abrir-ventana 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes abrir-ventana {
-  from { opacity: 0; transform: translateY(18px) scale(0.97); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* Fondo oscurecido y ligeramente borroso detrás de la ventana */
-.ventana::backdrop {
-  background: rgba(5, 15, 12, 0.72);
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(3px);
 }
 
-.ventana[open]::backdrop {
-  animation: fundir 0.4s ease-out;
-}
-
-@keyframes fundir {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+.ventana {
+  margin: auto;
+  width: min(92vw, 28rem);
 }
 
 .ventana-contenido {
+  background: linear-gradient(160deg, #2b5840 0%, #1a3828 100%);
+  border: 1px solid rgba(244, 235, 221, 0.2);
+  border-radius: 1.25rem;
+  padding: 2rem 1.75rem 1.75rem;
   position: relative;
-  padding: 2.25rem 1.9rem 1.9rem;
+  color: var(--crema);
   text-align: center;
 }
 
-/* Botón X de la esquina */
+@media (prefers-reduced-motion: no-preference) {
+  dialog[open] .ventana-contenido { animation: entrar 0.35s ease-out; }
+}
+
 .cerrar {
   position: absolute;
-  top: 0.8rem;
-  right: 0.8rem;
-  width: 2.2rem;
-  height: 2.2rem;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--texto-suave);
-  font-size: 1.6rem;
+  top: 0.75rem;
+  right: 0.85rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
   line-height: 1;
+  color: var(--crema-med);
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  padding: 0.2rem 0.4rem;
+  transition: color 0.15s;
 }
+.cerrar:hover { color: var(--crema); }
 
-.cerrar:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--texto);
-}
-
-.cerrar:focus-visible {
-  outline: 2px solid var(--dorado);
-  outline-offset: 2px;
-}
-
-/* Botón de música (esquina superior izquierda de la ventana) */
-.musica {
-  position: absolute;
-  top: 0.8rem;
-  left: 0.8rem;
-  width: 2.2rem;
-  height: 2.2rem;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--dorado);
-  font-size: 1.2rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.2s ease, opacity 0.2s ease;
-}
-
-.musica:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.musica:focus-visible {
-  outline: 2px solid var(--dorado);
-  outline-offset: 2px;
-}
-
-/* En pausa: se ve apagado y tachado */
-.musica[aria-pressed="false"] {
-  opacity: 0.55;
-  text-decoration: line-through;
-}
-
-/* Copo de nieve decorativo: gira una sola vez al abrir la ventana */
 .copo {
   display: block;
   margin: 0 auto 0.75rem;
-  color: var(--dorado);
-}
-
-.ventana[open] .copo {
-  animation: girar-copo 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes girar-copo {
-  from { transform: rotate(-90deg); opacity: 0; }
-  to   { transform: none; opacity: 1; }
+  color: var(--crema-med);
 }
 
 .ventana-titulo {
-  margin: 0 0 0.4rem;
   font-family: var(--fuente-titulo);
-  font-weight: 300;
-  font-size: 1.9rem;
-  line-height: 1.2;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
 }
 
 .ventana-sub {
-  margin: 0 0 1.75rem;
-  color: var(--texto-suave);
-  font-size: 0.95rem;
-}
-
-/* ---------- Campos con etiqueta flotante ---------- */
-.formulario {
-  text-align: left;
-}
-
-.campo {
-  position: relative;
+  font-size: 0.88rem;
+  color: var(--crema-med);
   margin-bottom: 1.2rem;
 }
 
+/* ================================================================
+   FORMULARIO
+   ================================================================ */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  text-align: left;
+}
+
+.campo { position: relative; }
+
 .campo input {
   width: 100%;
-  padding: 1.5rem 1rem 0.5rem;   /* espacio arriba para la etiqueta cuando "flota" */
-  border: 1px solid rgba(243, 246, 242, 0.22);
-  border-radius: 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--texto);
-  font: inherit;
-  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Al enfocar: borde dorado y un halo suave */
-.campo input:focus {
+  padding: 0.85rem 0.75rem 0.35rem;
+  background: rgba(244, 235, 221, 0.06);
+  border: 1px solid rgba(244, 235, 221, 0.25);
+  border-radius: 0.5rem;
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  color: var(--crema);
+  transition: border-color 0.2s;
   outline: none;
-  border-color: var(--dorado);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(228, 201, 142, 0.18);
 }
 
-/* La etiqueta empieza dentro del campo, como si fuera el placeholder */
+.campo input:focus { border-color: rgba(244, 235, 221, 0.55); }
+
 .campo label {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  color: var(--texto-suave);
+  top: 0.75rem;
+  left: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--crema-med);
   pointer-events: none;
-  transform-origin: left top;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: top 0.18s, font-size 0.18s;
 }
 
-/* ...y sube y se encoge cuando haces clic o ya hay texto escrito */
 .campo input:focus + label,
 .campo input:not(:placeholder-shown) + label {
-  transform: translateY(-0.75rem) scale(0.78);
+  top: 0.22rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
 }
 
-.campo input:focus + label {
-  color: var(--dorado);
-}
-
-/* Estado de error (la clase "con-error" la pone script.js) */
-.campo.con-error input {
-  border-color: #f2a7ae;
-}
-
-.campo.con-error label {
-  color: #f2a7ae;
-}
+.campo.con-error input { border-color: var(--rojo); }
 
 .campo-error {
+  font-size: 0.75rem;
+  color: #e07070;
+  margin-top: 0.25rem;
   display: block;
-  margin: 0.35rem 0 0 0.25rem;
-  font-size: 0.85rem;
-  color: #f2a7ae;
+  min-height: 1em;
 }
 
-.campo-error:empty {
-  display: none;                 /* sin texto, no ocupa espacio */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes sacudir {
+    0%,100% { transform: translateX(0);    }
+    20%,60% { transform: translateX(-5px); }
+    40%,80% { transform: translateX(5px);  }
+  }
+  .campo.sacudir { animation: sacudir 0.4s ease-in-out; }
 }
 
-/* Pequeña sacudida cuando hay un error */
-.campo.sacudir {
-  animation: sacudir 0.35s ease;
-}
-
-@keyframes sacudir {
-  20%, 60% { transform: translateX(-6px); }
-  40%, 80% { transform: translateX(6px); }
-}
-
-/* Aviso de error de conexión */
 .mensaje-form {
-  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: #e07070;
   text-align: center;
-  font-size: 0.95rem;
-  color: #f2a7ae;
+  min-height: 1.2em;
 }
 
-.mensaje-form:empty {
-  display: none;
-}
-
-/* ---------- Botones de la ventana ---------- */
 .acciones {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 0.4rem;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+.acciones .boton { width: 100%; }
+
+/* ================================================================
+   VISTA DE ÉXITO
+   ================================================================ */
+.exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
-.acciones .boton {
-  width: 100%;
-  text-align: center;
-}
+.exito-icono { position: relative; width: 60px; height: 60px; }
 
-/* Botón "Cancelar" y "Confirmar a otra persona": solo texto subrayado */
-.enlace {
-  padding: 0.5rem;
-  border: 0;
-  background: transparent;
-  color: var(--texto-suave);
-  font: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-}
+.check { display: block; width: 60px; height: 60px; }
 
-.enlace:hover {
-  color: var(--texto);
-}
-
-.enlace:focus-visible {
-  outline: 2px solid var(--dorado);
-  outline-offset: 3px;
-}
-
-/* ---------- Vista de éxito ---------- */
-.exito-icono {
-  position: relative;
-  width: 4.5rem;
-  height: 4.5rem;
-  margin: 0 auto 1.25rem;
-}
-
-.check {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* El círculo y la palomita se "dibujan" solos */
 .check-circulo {
   fill: none;
-  stroke: var(--dorado);
+  stroke: var(--rojo);
   stroke-width: 2;
-  stroke-dasharray: 151;
-  stroke-dashoffset: 151;
-  animation: trazar 0.7s ease-out forwards;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
 }
 
 .check-marca {
   fill: none;
-  stroke: var(--dorado);
-  stroke-width: 3;
+  stroke: var(--rojo);
+  stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 36;
-  stroke-dashoffset: 36;
-  animation: trazar 0.4s 0.55s ease-out forwards;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
 }
 
-@keyframes trazar {
-  to { stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .check-circulo { animation: dibujar-circulo 0.5s ease-out forwards; }
+  .check-marca   { animation: dibujar-marca   0.4s ease-out 0.5s forwards; }
 }
+
+@keyframes dibujar-circulo { to { stroke-dashoffset: 0; } }
+@keyframes dibujar-marca   { to { stroke-dashoffset: 0; } }
 
 .exito-texto {
-  margin: 0 0 1.5rem;
-  color: var(--texto-suave);
+  font-size: 0.92rem;
+  color: var(--crema-med);
+  line-height: 1.5;
 }
 
-/* Chispas doradas que salen del centro de la palomita (las crea script.js) */
+/* ================================================================
+   CHISPAS DE CELEBRACIÓN
+   ================================================================ */
 .chispas {
   position: absolute;
   inset: 0;
@@ -558,79 +647,45 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--tam);
-  height: var(--tam);
   border-radius: 50%;
+  width: var(--tam, 4px);
+  height: var(--tam, 4px);
   background: var(--dorado);
-  animation: chispa 0.95s ease-out both;
+  opacity: 0;
 }
 
-.chispa-blanca {
-  background: var(--texto);
-}
+.chispa-blanca { background: rgba(244, 235, 221, 0.9); }
 
-@keyframes chispa {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0);
-  }
-  30% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.6);
+@media (prefers-reduced-motion: no-preference) {
+  .chispa { animation: chispa 0.7s ease-out forwards; }
+  @keyframes chispa {
+    0%   { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))); }
   }
 }
 
-/* Respeto a quienes prefieren menos movimiento */
+/* ================================================================
+   RESPONSIVE — DESKTOP
+   ================================================================ */
+@media (min-width: 640px) {
+  .invitacion { padding: 3.5rem 3rem 3rem; }
+  .conteo     { gap: 0.9rem; }
+  .unidad     { min-width: 4rem; padding: 0.65rem 0.8rem 0.5rem; }
+  .guirnalda  { opacity: 0.85; }
+}
+
+@media (min-width: 900px) {
+  .guirnalda  { width: clamp(180px, 17vw, 240px); }
+  .arbol-fondo { width: 380px; }
+}
+
+/* ================================================================
+   PREFERS-REDUCED-MOTION — desactiva todo
+   ================================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .ventana[open],
-  .ventana[open]::backdrop,
-  .ventana[open] .copo,
-  .campo.sacudir {
-    animation: none;
-  }
-
-  .check-circulo,
-  .check-marca {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-}
-
-/* ---------- Logotipo de la empresa ---------- */
-.logo {
-  position: absolute;      /* fijo en la esquina; se va al hacer scroll */
-  top: 1.25rem;
-  right: 1.25rem;
-  z-index: 2;              /* por encima de la nieve */
-  height: 3rem;            /* altura del logo: cámbiala para hacerlo más grande o pequeño */
-  width: auto;             /* mantiene la proporción */
-  max-width: 40vw;         /* evita que sea demasiado ancho en celulares */
-}
-
-/* ---------- Pantallas pequeñas ---------- */
-@media (max-width: 420px) {
-  .unidad { min-width: 3rem; }
-  .etiqueta { font-size: 0.8rem; }
-
-  /* El logo se reduce para no tapar el título */
-  .logo {
-    height: 2.25rem;
-    top: 1rem;
-    right: 1rem;
-  }
-}
-
-/* ---------- Respeto a quienes prefieren menos movimiento ---------- */
-@media (prefers-reduced-motion: reduce) {
-  .invitacion,
-  .numero.cambio {
-    animation: none;
-  }
-  .boton {
-    transition: none;
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

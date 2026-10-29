@@ -97,13 +97,13 @@
    ========================================================= */
 (function nieve() {
   const CONFIG = {
-    copos: 70,           // cantidad de copos (menos = más sutil)
+    copos: window.innerWidth < 600 ? 35 : 70,  // menos partículas en móvil
     tamanoMin: 1,        // radio mínimo en píxeles
     tamanoMax: 3.2,      // radio máximo en píxeles
     velocidadMin: 0.3,   // velocidad de caída mínima
     velocidadMax: 1.1,   // velocidad de caída máxima
     viento: 0.25,        // qué tanto se mecen de lado a lado
-    color: "255, 255, 255", // color RGB de los copos
+    color: "244, 235, 221", // color RGB de los copos (crema #F4EBDD)
   };
 
   const lienzo = document.getElementById("nieve");
@@ -114,8 +114,14 @@
   const menosMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let copos = [];
-  let activa = !menosMovimiento;
   let idAnimacion = null;
+
+  // Preferencia guardada en localStorage (null = primera visita → seguir prefers-reduced-motion)
+  let activa = !menosMovimiento;
+  try {
+    const guardado = localStorage.getItem("nieve");
+    if (guardado !== null) activa = guardado === "true";
+  } catch (_) {}
 
   // Ajusta el lienzo al tamaño de la ventana (con nitidez en pantallas retina)
   function ajustarTamano() {
@@ -168,8 +174,8 @@
   function encender() {
     activa = true;
     if (!idAnimacion) dibujar();
-    interruptor.textContent = "Nieve: sí";
     interruptor.setAttribute("aria-pressed", "true");
+    try { localStorage.setItem("nieve", "true"); } catch (_) {}
   }
 
   function apagar() {
@@ -177,8 +183,8 @@
     cancelAnimationFrame(idAnimacion);
     idAnimacion = null;
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    interruptor.textContent = "Nieve: no";
     interruptor.setAttribute("aria-pressed", "false");
+    try { localStorage.setItem("nieve", "false"); } catch (_) {}
   }
 
   // Botón de la esquina: alterna entre encendido y apagado
@@ -216,7 +222,7 @@
 (function formularioAsistencia() {
 
   // >>> PEGA AQUÍ LA URL DE TU APLICACIÓN WEB DE GOOGLE <<<
-  const URL_HOJA = "PEGA_AQUI_LA_URL_DE_TU_APPS_SCRIPT";
+  const URL_HOJA = "https://script.google.com/macros/s/AKfycbw_0ZruusXgpVb9GrIIgPBAunOxUXuQGeUvSoUBDLgq_s18EtjGnENUGCw4uPgsNTrF/exec";
 
   // Atajo para buscar elementos por su id
   const $ = (id) => document.getElementById(id);
@@ -361,7 +367,7 @@
     }
 
     // Aviso si todavía no pegaste la URL de Google
-    if (URL_HOJA.startsWith("https://script.google.com/macros/s/AKfycbyek0Ej4Znvu0oeUW1f0SB2QzqTpz2RX2GjcGSrt5mQ_LwVUR6F9RnakWFdVFYenLwv/exec")) {
+    if (!URL_HOJA.startsWith("https://script.google.com/macros/s/")) {
       mensaje.textContent = "El formulario aún no está conectado a la hoja de cálculo.";
       return;
     }
@@ -375,15 +381,21 @@
     enviar.textContent = "Enviando...";
 
     try {
-      // Datos que recibirá Google (los nombres deben coincidir con el código de Apps Script)
-      const datos = new URLSearchParams({
-        nombre: nombre,
-        apellido: apellido,
-        empresa: formulario.empresa.value,   // campo trampa para bots (siempre vacío en personas)
+      // doPost() espera JSON con las claves timestamp, nombre, acompanantes.
+      // Con mode:"no-cors" no se puede poner Content-Type:application/json,
+      // pero Apps Script lee e.postData.contents sin importar el tipo MIME.
+      // El form no tiene campo "acompanantes", así que se envía 0 por defecto.
+      // Nota: "empresa" era campo trampa antibots; ya no se envía al servidor.
+      if (formulario.empresa.value) return;   // bot detectado: abortar silenciosamente
+      const datos = JSON.stringify({
+        timestamp: new Date().toISOString(),
+        nombre: nombre + " " + apellido,
+        acompanantes: 0,
       });
 
       // "no-cors" es necesario para hablar con Google desde una página externa.
-      // La respuesta no se puede leer, pero el envío sí llega a la hoja.
+      // La respuesta llega como opaque (no se puede leer), pero el registro
+      // sí se guarda. Ver script.js sección 4 para cambiar a cors+JSON legible.
       await fetch(URL_HOJA, { method: "POST", mode: "no-cors", body: datos });
 
       // Éxito: muestra la palomita animada y el agradecimiento

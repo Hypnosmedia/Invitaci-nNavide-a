@@ -1,0 +1,14 @@
+# Archivos fuente de audio (solo va el MP3 procesado en audio/)
+*.m4a
+*.wav
+*.aiff
+
+# Archivos temporales
+response.txt
+*.tmp
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini

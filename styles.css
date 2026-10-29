@@ -57,21 +57,7 @@ body {
 /* ================================================================
    ÁRBOL DE FONDO — dentro de la tarjeta, sin transparencia
    ================================================================ */
-.arbol-fondo {
-  
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 68%;
-  max-width: 280px;
-  height: 100%;
-  color: var(--verde-claro);   /* #2E5A43 sólido sobre crema */
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-   opacity: 0.6;
-}
+
 
 /* ================================================================
    GUIRNALDAS EN ESQUINAS SUPERIORES

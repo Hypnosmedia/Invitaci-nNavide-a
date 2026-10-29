@@ -2,22 +2,31 @@
    INVITACIÓN NOCHEBUENA ANTAVI — PALETA VERDE BOSQUE
    ================================================================ */
 
-/* ---------- Tokens de color ---------- */
+/* ---------- Tokens de color (todos sólidos, sin rgba con alfa) ---------- */
 :root {
-  --fondo:        #1F3B2D;
-  --fondo-claro:  #265a3e;
-  --crema:        #F4EBDD;
-  --crema-med:    rgba(244, 235, 221, 0.65);
-  --crema-suave:  rgba(244, 235, 221, 0.18);
-  --rojo:         #B8323F;
-  --rojo-oscuro:  #961E2A;
-  --dorado:       #C9A84C;
+  /* Fondo exterior */
+  --fondo:          #1F3B2D;
+  --fondo-claro:    #265A3E;
+  --verde-claro:    #2E5A43;
+  --verde-med:      #3D7A5A;
+  /* Tarjeta crema */
+  --crema:          #F4EBDD;
+  --crema-borde:    #D9CDB8;  /* separador / borde sobre crema */
+  --verde-texto:    #1F3B2D;  /* texto principal sobre crema   */
+  --verde-sub:      #2E5A43;  /* texto secundario sobre crema  */
+  /* Acentos */
+  --rojo:           #B8323F;
+  --rojo-oscuro:    #961E2A;
+  --dorado:         #C9A84C;
+  /* Pills sólidas */
+  --pill-on-bg:     #F4EBDD;
+  --pill-on-txt:    #1F3B2D;
+  --pill-off-bg:    #2E5A43;
+  --pill-off-txt:   #F4EBDD;
 
   --fuente-titulo: "Cormorant Garamond", Georgia, serif;
   --fuente-script: "Pinyon Script", cursive;
   --fuente-texto:  "DM Sans", system-ui, sans-serif;
-
-  color-scheme: dark;
 }
 
 /* ================================================================
@@ -33,6 +42,7 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   color: var(--crema);
+  /* Único degradado permitido: fondo verde bosque */
   background: radial-gradient(ellipse 90% 70% at 50% 38%,
     var(--fondo-claro) 0%,
     var(--fondo) 65%);
@@ -45,17 +55,17 @@ body {
 }
 
 /* ================================================================
-   ÁRBOL DE FONDO
+   ÁRBOL DE FONDO — dentro de la tarjeta, sin transparencia
    ================================================================ */
 .arbol-fondo {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(260px, 56vw, 400px);
-  height: auto;
-  opacity: 0.12;
-  color: var(--crema);
+  transform: translateX(-50%);
+  width: 68%;
+  max-width: 280px;
+  height: 100%;
+  color: var(--verde-claro);   /* #2E5A43 sólido sobre crema */
   z-index: 0;
   pointer-events: none;
   user-select: none;
@@ -77,16 +87,11 @@ body {
   width: clamp(120px, 22vw, 200px);
   height: auto;
   color: var(--crema);
-  opacity: 0.75;
   overflow: visible;
 }
 
 .guirnalda.gl { top: 0; left: 0; }
-.guirnalda.gr {
-  top: 0;
-  right: 0;
-  transform: scaleX(-1);
-}
+.guirnalda.gr { top: 0; right: 0; transform: scaleX(-1); }
 
 /* ================================================================
    HILO DE ESFERAS COLGANTES
@@ -109,13 +114,13 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .esfera-colg:nth-child(odd)  { animation: balanceo 3.8s ease-in-out infinite;      }
-  .esfera-colg:nth-child(even) { animation: balanceo 3.8s ease-in-out infinite 1s;   }
+  .esfera-colg:nth-child(odd)  { animation: balanceo 3.8s ease-in-out infinite;     }
+  .esfera-colg:nth-child(even) { animation: balanceo 3.8s ease-in-out infinite 1s;  }
 }
 
 @keyframes balanceo {
   0%, 100% { transform: rotate(-3.5deg); }
-  50%       { transform: rotate(3.5deg);  }
+  50%       { transform: rotate( 3.5deg); }
 }
 
 /* ================================================================
@@ -132,42 +137,66 @@ body {
 }
 
 /* ================================================================
-   CONTENIDO PRINCIPAL — MARCO DE POSTAL
+   TARJETA PRINCIPAL — MARCO DE POSTAL SÓLIDO
    ================================================================ */
 .invitacion {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 36rem;
+  max-width: 560px;     /* corrección desktop: ancho máximo fijo */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 1.1rem;
-  padding: 3rem 1.75rem 2.5rem;
-  border: 1px solid var(--crema-suave);
-  border-radius: 1rem;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  padding: 2.8rem 1.75rem 2.5rem;
+  /* Tarjeta crema sólida */
+  background: var(--crema);
+  border-radius: 6px;
+  /* Marco: capa 1 = línea interior crema-borde (1px),
+             capa 2 = marco verde oscuro (~12px)   */
+  box-shadow:
+    0 0 0 1px var(--crema-borde),
+    0 0 0 13px var(--fondo);
 }
 
-/* Perforaciones tipo sello */
+/* Franja decorativa superior — puntos verdes */
 .invitacion::before {
   content: "";
   position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  height: 14px;
-  border-radius: 1rem 1rem 0 0;
-  background-color: rgba(244, 235, 221, 0.22);
-  -webkit-mask-image: radial-gradient(circle 5.5px at 11px 50%, transparent 99%, black 100%);
-  mask-image: radial-gradient(circle 5.5px at 11px 50%, transparent 99%, black 100%);
-  -webkit-mask-size: 20px 14px;
-  mask-size: 20px 14px;
-  -webkit-mask-repeat: repeat-x;
-  mask-repeat: repeat-x;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  border-radius: 6px 6px 0 0;
+  background:
+    radial-gradient(circle, var(--verde-claro) 2.5px, transparent 2.5px)
+    7px 50% / 14px 14px repeat-x;
+  pointer-events: none;
+  z-index: 1;
 }
+
+/* Todos los hijos directos visibles se elevan sobre el árbol de fondo */
+.invitacion > *:not(.arbol-fondo):not(.acebo) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================================================================
+   DECORACIONES DE ESQUINA (acebo) — posición y espejo CSS
+   ================================================================ */
+.acebo {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+.acebo-tl { top:    4px; left:  4px; }
+.acebo-tr { top:    4px; right: 4px; transform: scaleX(-1); }
+.acebo-bl { bottom: 4px; left:  4px; transform: scaleY(-1); }
+.acebo-br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
 
 /* ================================================================
    ANIMACIONES DE ENTRADA ESCALONADAS
@@ -178,7 +207,7 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .invitacion > * {
+  .invitacion > *:not(.arbol-fondo):not(.acebo) {
     animation: entrar 0.75s ease-out both;
     animation-delay: var(--d, 0s);
   }
@@ -217,8 +246,9 @@ body {
   height: 2.6rem;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
+  /* antavi.png es PNG: brightness(0) lo convierte a negro sólido sobre crema.
+     Si tienes un SVG del logo, reemplaza esta imagen y usa fill: var(--verde-texto). */
+  filter: brightness(0);
 }
 
 /* ================================================================
@@ -228,7 +258,7 @@ body {
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--crema-med);
+  color: var(--verde-sub);
 }
 
 /* ================================================================
@@ -239,7 +269,7 @@ body {
   font-size: clamp(1.85rem, 5.5vw, 2.6rem);
   font-weight: 300;
   line-height: 1.2;
-  color: var(--crema);
+  color: var(--verde-texto);
   text-wrap: balance;
 }
 
@@ -258,9 +288,8 @@ body {
 .detalles {
   font-family: var(--fuente-titulo);
   font-size: clamp(1rem, 2.8vw, 1.15rem);
-  font-style: italic;
   font-weight: 300;
-  color: var(--crema-med);
+  color: var(--verde-sub);
   line-height: 1.5;
 }
 
@@ -279,27 +308,37 @@ body {
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+  transition: background 0.2s, transform 0.15s;
   text-decoration: none;
   background: var(--rojo);
-  color: #fff;
+  color: var(--crema);
 }
 
-.boton:hover  { background: var(--rojo-oscuro); }
+.boton:hover { background: var(--rojo-oscuro); }
+.boton:focus-visible {
+  outline: 3px solid var(--rojo-oscuro);
+  outline-offset: 2px;
+}
 .boton:active { transform: scale(0.97); }
 
+/* "Cómo llegar": borde verde, texto verde sobre crema */
 .boton-secundario {
-  background: transparent;
-  border: 1px solid rgba(244, 235, 221, 0.4);
-  color: var(--crema);
+  background: var(--crema);
+  border: 2px solid var(--verde-claro);
+  color: var(--verde-claro);
   font-size: 0.88rem;
 }
 
 .boton-secundario:hover {
-  background: rgba(244, 235, 221, 0.08);
-  border-color: rgba(244, 235, 221, 0.65);
+  background: var(--verde-claro);
+  color: var(--crema);
+}
+.boton-secundario:focus-visible {
+  outline: 3px solid var(--verde-claro);
+  outline-offset: 2px;
 }
 
+/* "Confirmar asistencia": ancho completo en móvil */
 .boton-confirmar {
   width: 100%;
   padding: 0.85em 1.8em;
@@ -320,8 +359,8 @@ body {
 }
 
 @keyframes pulso-suave {
-  0%, 100% { box-shadow: 0 0 0 0   rgba(184, 50, 63, 0.45); }
-  60%       { box-shadow: 0 0 0 10px rgba(184, 50, 63, 0);   }
+  0%, 100% { box-shadow: 0 0 0 0  var(--rojo-oscuro); }
+  60%       { box-shadow: 0 0 0 9px transparent; }
 }
 
 .boton.cargando { opacity: 0.75; cursor: wait; }
@@ -329,7 +368,7 @@ body {
 .enlace {
   background: none;
   border: none;
-  color: var(--crema-med);
+  color: var(--verde-sub);
   font-size: 0.85rem;
   cursor: pointer;
   text-decoration: underline;
@@ -337,10 +376,10 @@ body {
   padding: 0.25rem;
   transition: color 0.15s;
 }
-.enlace:hover { color: var(--crema); }
+.enlace:hover { color: var(--verde-texto); }
 
 /* ================================================================
-   CONTEO REGRESIVO
+   CONTEO REGRESIVO — bloques sólidos verde oscuro
    ================================================================ */
 .conteo {
   display: flex;
@@ -354,8 +393,8 @@ body {
   flex-direction: column;
   align-items: center;
   min-width: 3.2rem;
-  background: rgba(244, 235, 221, 0.06);
-  border: 1px solid var(--crema-suave);
+  background: var(--fondo);
+  border: 1px solid var(--verde-claro);
   border-radius: 0.5rem;
   padding: 0.5rem 0.6rem 0.4rem;
 }
@@ -365,14 +404,14 @@ body {
   font-size: clamp(1.6rem, 5vw, 2rem);
   font-weight: 600;
   line-height: 1;
-  color: var(--rojo);
+  color: var(--crema);
 }
 
 .etiqueta {
   font-size: 0.65rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--crema-med);
+  color: var(--crema-borde);
   margin-top: 0.2rem;
 }
 
@@ -396,48 +435,52 @@ body {
 
 .nota {
   font-size: 0.88rem;
-  color: var(--crema-med);
+  color: var(--verde-sub);
   max-width: 22rem;
 }
 
 /* ================================================================
-   CONTROLES FLOTANTES (Nieve / Música)
+   CONTROLES FLOTANTES — pills sólidas sin backdrop-filter
    ================================================================ */
 .controles {
   position: fixed;
   bottom: max(1.25rem, env(safe-area-inset-bottom, 1.25rem));
-  right: max(1rem, env(safe-area-inset-right, 1rem));
+  right:  max(1rem,    env(safe-area-inset-right,  1rem));
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   z-index: 10;
 }
 
+/* Estado activo (aria-pressed="true") */
 .control {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.45rem 0.85rem;
-  background: rgba(244, 235, 221, 0.90);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(244, 235, 221, 0.5);
+  background: var(--pill-on-bg);
+  border: 1px solid var(--verde-claro);
   border-radius: 99px;
   font-family: var(--fuente-texto);
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--fondo);
+  color: var(--pill-on-txt);
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
   white-space: nowrap;
 }
 
-.control:hover  { background: rgba(244, 235, 221, 1); }
+.control:hover  { background: var(--verde-claro); color: var(--crema); }
 .control:active { transform: scale(0.95); }
+.control:focus-visible {
+  outline: 3px solid var(--crema);
+  outline-offset: 2px;
+}
 
+/* Estado inactivo (aria-pressed="false") */
 .control[aria-pressed="false"] {
-  background: rgba(244, 235, 221, 0.45);
-  color: rgba(31, 59, 45, 0.7);
+  background: var(--pill-off-bg);
+  color: var(--pill-off-txt);
 }
 
 /* ================================================================
@@ -452,8 +495,7 @@ dialog {
 }
 
 dialog::backdrop {
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(3px);
+  background: #0C1F15; /* negro verdoso sólido, sin rgba */
 }
 
 .ventana {
@@ -462,8 +504,8 @@ dialog::backdrop {
 }
 
 .ventana-contenido {
-  background: linear-gradient(160deg, #2b5840 0%, #1a3828 100%);
-  border: 1px solid rgba(244, 235, 221, 0.2);
+  background: var(--fondo);
+  border: 2px solid var(--verde-claro);
   border-radius: 1.25rem;
   padding: 2rem 1.75rem 1.75rem;
   position: relative;
@@ -483,7 +525,7 @@ dialog::backdrop {
   border: none;
   font-size: 1.5rem;
   line-height: 1;
-  color: var(--crema-med);
+  color: var(--crema-borde);
   cursor: pointer;
   padding: 0.2rem 0.4rem;
   transition: color 0.15s;
@@ -493,7 +535,7 @@ dialog::backdrop {
 .copo {
   display: block;
   margin: 0 auto 0.75rem;
-  color: var(--crema-med);
+  color: var(--crema-borde);
 }
 
 .ventana-titulo {
@@ -505,7 +547,7 @@ dialog::backdrop {
 
 .ventana-sub {
   font-size: 0.88rem;
-  color: var(--crema-med);
+  color: var(--crema-borde);
   margin-bottom: 1.2rem;
 }
 
@@ -524,8 +566,8 @@ dialog::backdrop {
 .campo input {
   width: 100%;
   padding: 0.85rem 0.75rem 0.35rem;
-  background: rgba(244, 235, 221, 0.06);
-  border: 1px solid rgba(244, 235, 221, 0.25);
+  background: var(--verde-claro);
+  border: 1px solid var(--verde-med);
   border-radius: 0.5rem;
   font-family: var(--fuente-texto);
   font-size: 1rem;
@@ -534,14 +576,14 @@ dialog::backdrop {
   outline: none;
 }
 
-.campo input:focus { border-color: rgba(244, 235, 221, 0.55); }
+.campo input:focus { border-color: var(--crema-borde); }
 
 .campo label {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
   font-size: 0.95rem;
-  color: var(--crema-med);
+  color: var(--crema-borde);
   pointer-events: none;
   transition: top 0.18s, font-size 0.18s;
 }
@@ -630,7 +672,7 @@ dialog::backdrop {
 
 .exito-texto {
   font-size: 0.92rem;
-  color: var(--crema-med);
+  color: var(--crema-borde);
   line-height: 1.5;
 }
 
@@ -654,7 +696,7 @@ dialog::backdrop {
   opacity: 0;
 }
 
-.chispa-blanca { background: rgba(244, 235, 221, 0.9); }
+.chispa-blanca { background: var(--crema); }
 
 @media (prefers-reduced-motion: no-preference) {
   .chispa { animation: chispa 0.7s ease-out forwards; }
@@ -665,22 +707,26 @@ dialog::backdrop {
 }
 
 /* ================================================================
-   RESPONSIVE — DESKTOP
+   RESPONSIVE — DESKTOP (≥640 px)
    ================================================================ */
 @media (min-width: 640px) {
-  .invitacion { padding: 3.5rem 3rem 3rem; }
-  .conteo     { gap: 0.9rem; }
-  .unidad     { min-width: 4rem; padding: 0.65rem 0.8rem 0.5rem; }
-  .guirnalda  { opacity: 0.85; }
+  .invitacion {
+    padding: 3.5rem 3rem 3rem;
+    /* Marco más ancho en desktop */
+    box-shadow:
+      0 0 0 1px var(--crema-borde),
+      0 0 0 16px var(--fondo);
+  }
+  .conteo  { gap: 0.9rem; }
+  .unidad  { min-width: 4rem; padding: 0.65rem 0.8rem 0.5rem; }
 }
 
 @media (min-width: 900px) {
-  .guirnalda  { width: clamp(180px, 17vw, 240px); }
-  .arbol-fondo { width: 380px; }
+  .guirnalda { width: clamp(180px, 17vw, 240px); }
 }
 
 /* ================================================================
-   PREFERS-REDUCED-MOTION — desactiva todo
+   PREFERS-REDUCED-MOTION
    ================================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

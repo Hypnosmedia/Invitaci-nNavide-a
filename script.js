@@ -97,13 +97,13 @@
    ========================================================= */
 (function nieve() {
   const CONFIG = {
-    copos: window.innerWidth < 600 ? 35 : 70,  // menos partículas en móvil
-    tamanoMin: 1,        // radio mínimo en píxeles
-    tamanoMax: 3.2,      // radio máximo en píxeles
-    velocidadMin: 0.3,   // velocidad de caída mínima
-    velocidadMax: 1.1,   // velocidad de caída máxima
-    viento: 0.25,        // qué tanto se mecen de lado a lado
-    color: "244, 235, 221", // color RGB de los copos (crema #F4EBDD)
+    copos: window.innerWidth < 600 ? 35 : 70,
+    tamanoMin: 1,
+    tamanoMax: 3.2,
+    velocidadMin: 0.3,
+    velocidadMax: 1.1,
+    viento: 0.25,
+    color: "#F4EBDD",   // crema sólido, sin alfa
   };
 
   const lienzo = document.getElementById("nieve");
@@ -160,11 +160,9 @@
         Object.assign(c, crearCopo(true));
       }
 
-      // Los copos más grandes se ven más opacos (da sensación de profundidad)
-      const opacidad = 0.35 + (c.radio / CONFIG.tamanoMax) * 0.5;
       ctx.beginPath();
       ctx.arc(c.x, c.y, c.radio, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(" + CONFIG.color + ", " + opacidad + ")";
+      ctx.fillStyle = CONFIG.color;
       ctx.fill();
     }
 

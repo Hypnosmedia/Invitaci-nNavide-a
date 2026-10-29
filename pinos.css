@@ -1,0 +1,21 @@
+/* ---------- Pinos con desvanecido (a los lados, lejos del texto) ---------- */
+.pino {
+  position: fixed;
+  bottom: 0;
+  z-index: 0;                  /* detrás de la invitación; la nieve queda encima */
+  height: auto;
+  pointer-events: none;        /* no estorba clics ni selección */
+  opacity: 0.4;                /* baja a 0.3 para más discreción */
+
+  /* Desvanecido: sólido abajo, se vuelve transparente hacia arriba */
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,.6) 45%, transparent 90%);
+          mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,.6) 45%, transparent 90%);
+}
+
+.pino-izq { left: 3vw;  width: clamp(110px, 14vw, 210px); }
+.pino-der { right: 3vw; width: clamp(80px, 10vw, 150px); opacity: 0.3; }
+
+/* En pantallas angostas el texto ocupa todo el ancho: se ocultan los pinos */
+@media (max-width: 800px) {
+  .pino { display: none; }
+}
